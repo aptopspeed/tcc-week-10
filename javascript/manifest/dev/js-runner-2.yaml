@@ -19,13 +19,13 @@ spec:
         app: js-runner-2
     spec:
       containers:
-      - image: aptopspeed/js-runner-2:24wda1
-        imagePullPolicy: Always
-        name: js-runner-2
-        resources: {}
-        envFrom:
-          - configMapRef:
-             name: runnerconfig
-          - secretRef:
-             name: runnersecret
+        - image: aptopseed/js-runner-2:cb4d4a
+          imagePullPolicy: Always
+          name: js-runner-2
+          resources: {}
+          envFrom:
+            - configMapRef:
+                name: runnerconfig
+            - secretRef:
+                name: runnersecret
 status: {}
