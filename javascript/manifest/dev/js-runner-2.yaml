@@ -19,7 +19,7 @@ spec:
         app: js-runner-2
     spec:
       containers:
-        - image: aptopseed/js-runner-2:02022b
+        - image: aptopseed/js-runner-2:aa0b1d
           imagePullPolicy: Always
           name: js-runner-2
           resources: {}
