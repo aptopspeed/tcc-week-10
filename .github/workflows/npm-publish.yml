@@ -16,6 +16,8 @@ jobs:
     defaults:
       run:
         working-directory: ./javascript # Here the path to the folder where package-lock.json is located.
+    permissions:
+      contents: write
     strategy:
       matrix:
         node-version: [18.x]
