@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: js-runner-2
+  name: js-runner-2
+  namespace: group-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: js-runner-2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: js-runner-2
+    spec:
+      containers:
+      - image: aptopspeed/js-runner-2:24wda1
+        imagePullPolicy: Always
+        name: js-runner-2
+        resources: {}
+        envFrom:
+          - configMapRef:
+            name: runnerconfig
+          - secretRef:
+            name: runnersecret
+status: {}
