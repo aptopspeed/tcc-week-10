@@ -91,6 +91,7 @@ jobs:
           kubectl config set-credentials tcc-01-user --token=${{ secrets.TCC01_TOKEN }}
           kubectl config set-context tcc-01 --user=tcc-01-user
           kubectl config use-context tcc-01
+          kubectl get ns
 
       - uses: actions/checkout@v3
 
