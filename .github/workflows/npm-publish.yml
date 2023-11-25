@@ -62,3 +62,22 @@ jobs:
         context: ./javascript
         push: true
         tags: aptopspeed/js-runner-2:${{ env.SHA }}
+
+
+    - name: Replace Docker Image with Commit SHA
+      id: Replace_Docker_Image
+      uses: mikefarah/yq@master
+      with:
+        cmd: yq -i '.spec.template.spec.containers.[0].image = "aptopseed/js-runner-2:${{ env.SHA }}"' javascript/manifest/dev/js-runner-2.yaml
+
+    - name: Commit & Push Manifest Changes
+      run: |
+        git config user.name "aptopspeed"
+        git config user.email "maplestory.ssso@gmail.com"
+        git add manifest/dev/*
+        git commit -m "Update manifest"
+        git push
+
+  deployment:
+    needs: build-docker-image
+    runs-on: ubuntu-latest
