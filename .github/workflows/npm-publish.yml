@@ -38,6 +38,7 @@ jobs:
     #    npm install
     #    npm run build --if-present
     #    npm test
+
     # Short SHA for create tag from commited ID
     # https://github.com/marketplace/actions/short-sha
     - uses: benjlevesque/short-sha@v2.2
@@ -62,8 +63,7 @@ jobs:
         context: ./javascript
         push: true
         tags: aptopspeed/js-runner-2:${{ env.SHA }}
-
-
+        
     - name: Replace Docker Image with Commit SHA
       id: Replace_Docker_Image
       uses: mikefarah/yq@master
@@ -81,3 +81,37 @@ jobs:
   deployment:
     needs: build-docker-image
     runs-on: ubuntu-latest
+    steps:
+      - name: 'Authenticate to TCC01'
+        run: |
+          kubectl config set-cluster tcc-01 --server=${{ env.CLUSTER_NAME }} 
+          kubectl config set-context tcc-01 --cluster=tcc-01
+          kubectl config set-credentials tcc-01-user --token=${{ secrets.TCC01_TOKEN }}
+          kubectl config set-context tcc-01 --user=tcc-01-user
+          kubectl config use-context tcc-01
+
+      - uses: actions/checkout@v3
+
+      - name: 'Deploy Dev'
+        run: |
+          pwd 
+          cat javascript/manifest/dev/js-runner-2.yaml
+          kubectl apply -f javascript/manifest/dev/runnerconfig.yaml
+          kubectl apply -f javascript/manifest/dev/runnersecret.yaml
+          kubectl apply -f javascript/manifest/dev/js-runner-2.yaml
+          kubectl apply -f javascript/manifest/dev/js-runner-2-svc.yaml
+          kubectl apply -f javascript/manifest/dev/runneringress.yaml
+      
+      #https://github.com/marketplace/actions/send-email
+      # - name: Notify By Email
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.gmail.com
+      #     server_port: 465
+      #     username: ${{ secrets.EMAIL_USERNAME }}
+      #     password: ${{ secrets.EMAIL_PASSWORD }}
+      #     subject: 'Deployment Success'
+      #     body: 'Deployment Success'
+      #     from: ${{ secrets.EMAIL_USERNAME }}
+      #     to: ${{ secrets.EMAIL_TO_LIST }}
+      #     content_type: 'text/plain'
