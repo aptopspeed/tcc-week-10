@@ -25,7 +25,7 @@ spec:
           resources: {}
           envFrom:
             - configMapRef:
-                name: runnerconfig
+               name: runnerconfig
             - secretRef:
-                name: runnersecret
+               name: runnersecret
 status: {}
